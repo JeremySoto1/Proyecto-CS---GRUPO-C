@@ -1,0 +1,192 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: sans-serif;
+}
+
+body {
+  background-image: url(../images/bg1.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+main {
+  width: 100%;
+  padding: 20px;
+  margin: auto;
+  margin-top: 100px;
+}
+
+.contenedor__all {
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  position: relative;
+}
+
+.caja__tracera {
+  width: 100%;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  background-color: rgba(173, 141, 99, 0.781);
+}
+
+.caja__trasera-login {
+  margin: 100px 60px;
+  color: white;
+  transition: all 500ms;
+}
+
+.caja__trasera-recovery_password {
+  margin: 100px 60px;
+  color: white;
+  transition: all 500ms;
+}
+
+p {
+  margin-top: 30px;
+}
+
+h3 {
+  font-weight: 400;
+  font-size: 26px;
+}
+
+.button_divs {
+  margin-top: 30px;
+  padding: 10px 40px;
+  border: 2px solid white;
+  background-color: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  color: white;
+  outline: none;
+  transform: all 300ms;
+}
+
+.button_divs:hover {
+  background: #fff;
+  color: #654f;
+}
+
+/*Formularios*/
+.contenedor_login {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 380px;
+  position: relative;
+  top: -185px;
+  left: 10px;
+  transition: right 650ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.contenedor_recovery_password {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 360px;
+  position: relative;
+  top: -185px;
+  left: 10px;
+  transition: left 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.form__login {
+  width: 100%;
+  padding: 80px 20px;
+  background: #fff;
+  position: absolute;
+  border-radius: 25px;
+  opacity: 1;
+  display: block;
+}
+
+.form__recovery {
+  width: 100%;
+  padding: 80px 20px;
+  background: #fff;
+  position: absolute;
+  border-radius: 25px;
+  display: none;
+}
+
+.h2_login {
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #654f;
+}
+
+input {
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px;
+  border: none;
+  background: #f2f2f2;
+  font-size: 16px;
+  outline: none;
+}
+
+.btn_lg,
+.btn_rc {
+  padding: 10px 40px;
+  margin-top: 40px;
+  border: none;
+  font-size: 14px;
+  background: #654f;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+}
+
+/*Responsive Design*/
+
+@media screen and (max-width: 850px) {
+  main {
+    margin-top: 50px;
+  }
+
+  .caja__tracera {
+    max-width: 350px;
+    height: 300px;
+    flex-direction: column;
+    margin: auto;
+  }
+
+  .caja__trasera-login,
+  .caja__trasera-recovery_password {
+    margin: 0;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+  }
+
+  /*Formularios*/
+  .contenedor_login {
+    top: -10px;
+    left: -5px;
+    margin: auto;
+  }
+
+  .form__login {
+    position: relative;
+  }
+
+  .contenedor_recovery_password {
+    top: -10px;
+    left: -5px;
+    margin: auto;
+  }
+
+  .form__recovery {
+    position: relative;
+  }
+}
