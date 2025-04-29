@@ -1,171 +1,171 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #f5f5f5;
+/* Estilos específicos para el módulo de existencias */
+.main-content .content {
   padding: 20px;
-}
-
-h1 {
-  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-busqueda {
+  margin-bottom: 20px;
   display: flex;
   gap: 10px;
-  justify-content: center;
-  margin-bottom: 20px;
+  align-items: center;
 }
 
-input,
-select,
-button {
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+.form-busqueda select,
+.form-busqueda input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
-button {
+.form-busqueda button {
+  padding: 8px 15px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
+}
+
+.table-container {
+  overflow-x: auto;
 }
 
 .tabla {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
-  background: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .tabla th,
 .tabla td {
-  padding: 10px;
-  text-align: center;
-  border: 1px solid #ddd;
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabla th {
+  background-color: #4caf50;
+  color: white;
+}
+
+.tabla tr:hover {
+  background-color: #f5f5f5;
+}
+
+.btn-modificar {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-modificar:hover {
+  background-color: #0b7dda;
 }
 
 .btn-agregar {
-  display: block;
-  margin: 20px auto;
-  background: #28a745;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #4caf50;
   color: white;
   border: none;
-  padding: 10px 20px;
-  font-weight: bold;
-  border-radius: 8px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-agregar:hover {
-  background: #218838;
+  background-color: #45a049;
 }
 
-.btn-modificar {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 5px;
-}
-
-.btn-modificar:hover {
-  background: #0069d9;
-}
-
-.form-flotante {
+/* Estilos para formularios flotantes */
+.form-flotante,
+.form-modificar {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
-  height: 100%;
   width: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: none;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
-}
-
-.formulario-agregar {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  width: 350px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.acciones {
-  display: flex;
-  justify-content: space-between;
-}
-
-.form-flotante {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #ffffff;
-  border: 2px solid #ccc;
-  padding: 20px;
   z-index: 1000;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
-  display: none;
-  max-width: 400px;
 }
 
-.form-flotante h2 {
+.formulario-agregar,
+.form-modificar form {
+  background-color: white;
+  padding: 25px;
+  border-radius: 8px;
+  width: 450px;
+  max-width: 90%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.formulario-agregar h2,
+.form-modificar h2 {
   margin-top: 0;
-  margin-bottom: 15px;
-  font-size: 1.4rem;
+  margin-bottom: 20px;
+  color: #2c3e50;
+  text-align: center;
 }
 
-.formulario-agregar label {
+.formulario-agregar label,
+.form-modificar label {
   display: block;
-  margin-top: 10px;
-  font-weight: bold;
+  margin: 10px 0 5px;
+  font-weight: 500;
 }
 
 .formulario-agregar input,
-.formulario-agregar select {
+.formulario-agregar select,
+.form-modificar input,
+.form-modificar select {
   width: 100%;
-  padding: 6px;
-  margin-top: 5px;
-  box-sizing: border-box;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
 .acciones {
-  margin-top: 15px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 .acciones button {
-  padding: 8px 12px;
-  font-size: 1rem;
+  padding: 10px 20px;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.btn-agregar {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  background: #28a745;
-  color: #fff;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 50%;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.btn-modificar {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 6px 10px;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: 500;
 }
 
-.btn-modificar:hover {
-  background-color: #0056b3;
+.acciones button[type="submit"] {
+  background-color: #4caf50;
+  color: white;
+}
+
+.acciones button[type="button"] {
+  background-color: #f44336;
+  color: white;
 }

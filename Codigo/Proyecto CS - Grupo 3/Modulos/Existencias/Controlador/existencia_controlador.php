@@ -1,28 +1,52 @@
 <?php
 require_once "../Modelo/existencias_modelo.php";
 
-$accion = $_POST['accion'] ?? '';
-
-$libroID = $_POST['libroID'] ?? null;
-$ubicacionID = $_POST['ubicacionID'] ?? null;
-$estadoExistenciaID = $_POST['estadoExistenciaID'] ?? null;
-$disponibilidadExistenciaID = $_POST['disponibilidadExistenciaID'] ?? null;
-
-if ($accion === 'guardar') {
-    $stmt = mysqli_prepare($enlace, "CALL insertar_existencia(?, ?, ?, ?)");
-    mysqli_stmt_bind_param($stmt, "iiii", $libroID, $ubicacionID, $estadoExistenciaID, $disponibilidadExistenciaID);
-    mysqli_stmt_execute($stmt);
-    mysqli_next_result($enlace);
-    header("Location: ../Vista/existencias.php?exito=1");
-    exit();
+function obtenerDatosVista() {
+    $campo = $_GET['campo_busqueda'] ?? '';
+    $valor = $_GET['valor_busqueda'] ?? '';
+    
+    $datos = [
+        'existencias' => $campo && $valor ? buscarExistencias($campo, $valor) : obtenerTodasExistencias(),
+        'ubicaciones' => obtenerUbicaciones(),
+        'estados' => obtenerEstadosExistencia(),
+        'disponibilidades' => obtenerDisponibilidades()
+    ];
+    
+    return $datos;
 }
 
-if ($accion === 'modificar') {
-    $existenciaID = $_POST['existenciaID'];
-    if (actualizarExistencia($existenciaID, $libroID, $ubicacionID, $estadoExistenciaID, $disponibilidadExistenciaID)) {
-        header("Location: ../Vista/existencias.php?modificado=1");
+if (isset($_POST['guardar_existencia'])) {
+    $libroID = $_POST['libroID'];
+    $ubicacionID = $_POST['ubicacionID'];
+    $estadoExistenciaID = $_POST['estadoExistenciaID'];
+    $disponibilidadExistenciaID = $_POST['disponibilidadExistenciaID'];
+
+    $resultado = insertarExistencia($libroID, $ubicacionID, $estadoExistenciaID, $disponibilidadExistenciaID);
+
+    if ($resultado) {
+        header("Location: ../Vista/existencias.php?exito=1");
+        exit();
     } else {
-        echo "Error al modificar.";
+        echo "❌ Error al guardar la existencia.";
     }
 }
+
+if (isset($_POST['accion']) && $_POST['accion'] === 'modificar') {
+    $existenciaID = $_POST['existenciaID'];
+        $libroID = $_POST['libroID'];
+        $ubicacionID = $_POST['ubicacionID'];
+        $estadoExistenciaID = $_POST['estadoExistenciaID'];
+        $disponibilidadExistenciaID = $_POST['disponibilidadExistenciaID'];
+
+        $resultado = modificarExistencia($existenciaID, $libroID, $ubicacionID, $estadoExistenciaID, $disponibilidadExistenciaID);
+
+        if ($resultado) {
+            header("Location: ../Vista/existencias.php?modificado=1");
+            exit();
+        } else {
+            echo "❌ Error al modificar la existencia.";
+        }
+    }
+
+
 ?>

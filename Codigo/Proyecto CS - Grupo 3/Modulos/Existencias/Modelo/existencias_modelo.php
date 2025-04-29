@@ -70,14 +70,20 @@ function insertarExistencia($libroID, $ubicacionID, $estadoExistenciaID, $dispon
     }
 }
 
-function actualizarExistencia($existenciaID, $libroID, $ubicacionID, $estadoExistenciaID, $disponibilidadExistenciaID) {
+function modificarExistencia($existenciaID, $libroID, $ubicacionID, $estadoExistenciaID, $disponibilidadExistenciaID) {
     global $enlace;
-    $stmt = mysqli_prepare($enlace, "CALL sp_actualizar_existencia(?, ?, ?, ?, ?)");
-    mysqli_stmt_bind_param($stmt, "iiiii", $existenciaID, $libroID, $ubicacionID, $estadoExistenciaID, $disponibilidadExistenciaID);
-    $resultado = mysqli_stmt_execute($stmt);
-    mysqli_next_result($enlace);
-    return $resultado;
-}
 
+    $stmt = mysqli_prepare($enlace, "CALL sp_actualizar_existencia(?, ?, ?, ?, ?)");
+
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "iiiii", $existenciaID, $libroID, $ubicacionID, $estadoExistenciaID, $disponibilidadExistenciaID);
+        $ejecucion = mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+        mysqli_next_result($enlace); // Limpia el buffer para futuras llamadas
+        return $ejecucion;
+    } else {
+        return false;
+    }
+}
 
 ?>

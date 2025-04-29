@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Mostrar/ocultar formulario
   document
     .getElementById("mostrarFormulario")
     .addEventListener("click", function () {
@@ -10,6 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function editarLibro(libroID) {
   const fila = document.getElementById(`fila-${libroID}`);
+
+  // Llenar formulario con datos del libro
   document.getElementById("libroID").value = libroID;
   document.getElementById("title").value =
     fila.querySelector(".titulo").innerText;
@@ -21,9 +24,11 @@ function editarLibro(libroID) {
   document.getElementById("gender").value =
     fila.querySelector(".gender").dataset.id;
 
+  // Mostrar formulario
   const formulario = document.getElementById("formularioLibro");
   formulario.style.display = "block";
 
+  // Cambiar botón a modificar
   const boton = document.querySelector("#form_libro button[type='submit']");
   boton.name = "modificar";
   boton.textContent = "Modificar Libro";
@@ -32,6 +37,8 @@ function editarLibro(libroID) {
 function limpiarFormulario() {
   document.getElementById("form_libro").reset();
   document.getElementById("libroID").value = "";
+
+  // Restaurar botón a guardar
   const boton = document.querySelector("#form_libro button[type='submit']");
   boton.name = "guardar";
   boton.textContent = "Guardar Libro";
@@ -39,9 +46,5 @@ function limpiarFormulario() {
 
 function toggleDeshabilitados() {
   const tabla = document.getElementById("tablaDeshabilitados");
-  if (tabla.style.display === "none") {
-    tabla.style.display = "block";
-  } else {
-    tabla.style.display = "none";
-  }
+  tabla.style.display = tabla.style.display === "none" ? "block" : "none";
 }
