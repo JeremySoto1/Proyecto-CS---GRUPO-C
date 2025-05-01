@@ -32,6 +32,11 @@ require_once '../Modulos/Login/validar_sesion.php';
                         <i class="fas fa-book"></i> Libros
                     </a>
                 </li><br>
+                <li>
+                    <a href="../Modulos/Existencias/Vista/existencias.php">
+                        <i class="fas fa-book"></i> Existencias
+                    </a>
+                </li><br>
                 <li class="has-submenu">
                     <a href="#" onclick="toggleSubmenu(event, this)">
                         <i class="fas fa-users"></i> Usuarios
@@ -49,7 +54,7 @@ require_once '../Modulos/Login/validar_sesion.php';
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li><br>
                 <li>
                     <a href="../Modulos/Cubiculo/dashboard.php">
                         <i class="fas fa-door-closed"></i> Cubículo
