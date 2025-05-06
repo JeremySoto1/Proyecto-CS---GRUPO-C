@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - Sistema Biblioteca</title>
     <link rel="stylesheet" href="assets/CSS/styless.css" />
+   
 </head>
 <body>
     <main>
@@ -27,7 +28,29 @@
                 <form action="Modulos/Login/validar_login.php" method="POST" class="form__login">
                     <h2 class="h2_login">Iniciar Sesión</h2>
                     <?php if(isset($_GET['error'])): ?>
-                        <div class="error"><?= htmlspecialchars($_GET['error']) ?></div>
+                        <div class="error-message 
+                            <?php 
+                                if(isset($_GET['code'])) {
+                                    switch(intval($_GET['code'])) {
+                                        case 0: echo 'error-usuario'; break;
+                                        case 1: echo 'error-contrasenia'; break;
+                                        case 2: echo 'error-bloqueo'; break;
+                                        default: echo 'error-generico';
+                                    }
+                                } else {
+                                    echo 'error-generico';
+                                }
+                            ?>
+                        ">
+                            <?= htmlspecialchars($_GET['error']) ?>
+                            <?php if(isset($_GET['code']) && intval($_GET['code']) === 0): ?>
+                                
+                            <?php elseif(isset($_GET['code']) && intval($_GET['code']) === 1): ?>
+                                <br><a href="#" class="recovery-link" onclick="mostrarRecuperacion()">¿Olvidaste tu contraseña?</a>
+                            <?php elseif(isset($_GET['code']) && intval($_GET['code']) === 2): ?>
+                                <br><a href="contacto.php" class="recovery-link">Contactar al administrador</a>
+                            <?php endif; ?>
+                        </div>
                     <?php endif; ?>
                     <input type="text" placeholder="Nombre de Usuario" name="username" required>
                     <input type="password" placeholder="Contraseña" name="password" required>
@@ -47,5 +70,21 @@
         </div>
     </main>
     <script src="assets/js/script.js"></script>
+    <script>
+        // Función para mostrar el formulario de recuperación
+        function mostrarRecuperacion() {
+            document.querySelector('.contenedor_login').style.display = 'none';
+            document.querySelector('.contenedor_recovery_password').style.display = 'block';
+            document.querySelector('.caja__trasera-login').style.display = 'none';
+            document.querySelector('.caja__trasera-recovery_password').style.display = 'block';
+        }
+        
+        // Mostrar formulario de recuperación si viene de un error de contraseña
+        <?php if(isset($_GET['code']) && intval($_GET['code']) === 1): ?>
+            document.addEventListener('DOMContentLoaded', function() {
+                mostrarRecuperacion();
+            });
+        <?php endif; ?>
+    </script>
 </body>
 </html>

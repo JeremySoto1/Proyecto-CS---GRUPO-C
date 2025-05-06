@@ -34,12 +34,12 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto CS - Grupo 3/Modulos/Login/val
                 </a>
                 <ul class="submenu">
                     <li>
-                        <a href="../Modulos/Usuarios/bibliotecario.php">
+                        <a href="/Proyecto CS - Grupo 3/Modulos/Bibliotecario/Vista/bibliotecario.php">
                             <i class="fas fa-user-shield"></i> Bibliotecarios
                         </a>
                     </li>
                     <li>
-                        <a href="../Modulos/Usuarios/lector.php">
+                        <a href="/Proyecto CS - Grupo 3/Modulos/Lector/Vista/lector.php">
                             <i class="fas fa-user-graduate"></i> Lectores
                         </a>
                     </li>

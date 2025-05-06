@@ -54,6 +54,7 @@ function obtenerDisponibilidades() {
     return $disponibilidades;
 }
 
+// Inserta los datos de existencia a la BD
 function insertarExistencia($libroID, $ubicacionID, $estadoExistenciaID, $disponibilidadExistenciaID) {
     global $enlace;
 

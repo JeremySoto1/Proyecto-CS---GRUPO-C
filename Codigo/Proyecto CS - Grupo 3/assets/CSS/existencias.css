@@ -3,8 +3,12 @@
   padding: 20px;
   width: 100%;
   box-sizing: border-box;
+  background-color: #faf8f6;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
+/* Formulario de búsqueda */
 .form-busqueda {
   margin-bottom: 20px;
   display: flex;
@@ -15,19 +19,28 @@
 .form-busqueda select,
 .form-busqueda input {
   padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1px solid #d6cfc4;
+  border-radius: 6px;
+  background-color: #f9f5f0;
+  font-size: 14px;
+  color: #333;
 }
 
 .form-busqueda button {
   padding: 8px 15px;
-  background-color: #4caf50;
+  background-color: #ad8d63;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: bold;
 }
 
+.form-busqueda button:hover {
+  background-color: #967854;
+}
+
+/* Tabla */
 .table-container {
   overflow-x: auto;
 }
@@ -36,46 +49,51 @@
   width: 100%;
   border-collapse: collapse;
   margin: 20px 0;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .tabla th,
 .tabla td {
   padding: 12px 15px;
   text-align: left;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #d6cfc4;
 }
 
 .tabla th {
-  background-color: #4caf50;
+  background-color: #ad8d63;
   color: white;
+  font-weight: 600;
 }
 
 .tabla tr:hover {
-  background-color: #f5f5f5;
+  background-color: #f9f5f0;
 }
 
+/* Botones */
 .btn-modificar {
-  background-color: #2196f3;
+  background-color: #ad8d63;
   color: white;
   border: none;
   padding: 8px 12px;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 5px;
+  font-weight: 500;
 }
 
 .btn-modificar:hover {
-  background-color: #0b7dda;
+  background-color: #967854;
 }
 
 .btn-agregar {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  background-color: #4caf50;
+  background-color: #ad8d63;
   color: white;
   border: none;
   width: 60px;
@@ -83,17 +101,31 @@
   border-radius: 50%;
   font-size: 24px;
   cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .btn-agregar:hover {
-  background-color: #45a049;
+  background-color: #967854;
 }
 
-/* Estilos para formularios flotantes */
+.btn-eliminar {
+  background-color: #b3472d;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-eliminar:hover {
+  background-color: #912f1a;
+}
+
+/* Formularios flotantes */
 .form-flotante,
 .form-modificar {
   display: none;
@@ -110,19 +142,19 @@
 
 .formulario-agregar,
 .form-modificar form {
-  background-color: white;
+  background-color: #f9f5f0;
   padding: 25px;
-  border-radius: 8px;
+  border-radius: 10px;
   width: 450px;
   max-width: 90%;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
 }
 
 .formulario-agregar h2,
 .form-modificar h2 {
   margin-top: 0;
   margin-bottom: 20px;
-  color: #2c3e50;
+  color: #ad8d63;
   text-align: center;
 }
 
@@ -130,7 +162,7 @@
 .form-modificar label {
   display: block;
   margin: 10px 0 5px;
-  font-weight: 500;
+  font-weight: bold;
 }
 
 .formulario-agregar input,
@@ -140,11 +172,13 @@
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1px solid #d6cfc4;
+  border-radius: 6px;
   font-size: 14px;
+  background-color: #faf8f6;
 }
 
+/* Botones del formulario */
 .acciones {
   display: flex;
   justify-content: flex-end;
@@ -155,17 +189,26 @@
 .acciones button {
   padding: 10px 20px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: bold;
+  font-size: 14px;
 }
 
 .acciones button[type="submit"] {
-  background-color: #4caf50;
+  background-color: #ad8d63;
   color: white;
 }
 
+.acciones button[type="submit"]:hover {
+  background-color: #967854;
+}
+
 .acciones button[type="button"] {
-  background-color: #f44336;
+  background-color: #b3472d;
   color: white;
+}
+
+.acciones button[type="button"]:hover {
+  background-color: #912f1a;
 }

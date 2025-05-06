@@ -44,12 +44,12 @@ require_once '../Modulos/Login/validar_sesion.php';
                     </a>
                     <ul class="submenu">
                         <li>
-                            <a href="../Modulos/Usuarios/bibliotecario.php">
+                            <a href="../Modulos/Bibliotecario/Vista/bibliotecario.php">
                                 <i class="fas fa-user-shield"></i> Bibliotecarios
                             </a>
                         </li>
                         <li>
-                            <a href="../Modulos/Usuarios/lector.php">
+                            <a href="../Modulos/Lector/Vista/lector.php">
                                 <i class="fas fa-user-graduate"></i> Lectores
                             </a>
                         </li>
