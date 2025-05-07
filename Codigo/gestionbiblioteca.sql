@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-04-2025 a las 18:28:54
+-- Tiempo de generación: 07-05-2025 a las 04:01:27
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `gestionbiblioteca`
 --
-CREATE DATABASE IF NOT EXISTS `gestionbiblioteca` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `gestionbiblioteca`;
 
 DELIMITER $$
 --
@@ -99,6 +97,41 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_actualizar_existencia` (IN `p_ex
     WHERE existenciaID = p_existenciaID;
 END$$
 
+DROP PROCEDURE IF EXISTS `sp_buscar_bibliotecarios`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_buscar_bibliotecarios` (IN `p_campo` VARCHAR(20), IN `p_valor` VARCHAR(30))   BEGIN
+    SET @sql = CONCAT('SELECT bibliotecarioID, nombre, apellido, email, usuario, rolID 
+                      FROM bibliotecario 
+                      WHERE rolID = 2 AND ', p_campo, ' LIKE CONCAT("%", ?, "%")');
+    
+    PREPARE stmt FROM @sql;
+    SET @valor = p_valor;
+    EXECUTE stmt USING @valor;
+    DEALLOCATE PREPARE stmt;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_buscar_lector`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_buscar_lector` (IN `p_cedula` VARCHAR(20))   BEGIN
+    SELECT 
+        nombre,
+        email
+    FROM 
+        lector
+    WHERE 
+        cedula = p_cedula;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_buscar_lectores`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_buscar_lectores` (IN `p_campo` VARCHAR(20), IN `p_valor` VARCHAR(50))   BEGIN
+    SET @sql = CONCAT('SELECT lectorID, nombre, apellido, cedula, email, telefono, direccion, estadoLectorID 
+                      FROM lector 
+                      WHERE ', p_campo, ' LIKE CONCAT("%", ?, "%")');
+    
+    PREPARE stmt FROM @sql;
+    SET @valor = p_valor;
+    EXECUTE stmt USING @valor;
+    DEALLOCATE PREPARE stmt;
+END$$
+
 DROP PROCEDURE IF EXISTS `sp_buscar_libros`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_buscar_libros` (IN `campo_busqueda` VARCHAR(20), IN `valor_busqueda` VARCHAR(255))   BEGIN
     IF campo_busqueda = 'titulo' THEN
@@ -127,6 +160,18 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_buscar_libros` (IN `campo_busque
     END IF;
 END$$
 
+DROP PROCEDURE IF EXISTS `sp_desactivar_lector`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_desactivar_lector` (IN `p_lectorID` INT)   BEGIN
+    UPDATE lector
+    SET estadoLectorID = 2 -- 2 = Inactivo
+    WHERE lectorID = p_lectorID;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_eliminar_bibliotecario`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_eliminar_bibliotecario` (IN `p_bibliotecarioID` INT)   BEGIN
+    DELETE FROM bibliotecario WHERE bibliotecarioID = p_bibliotecarioID AND rolID = 2;
+END$$
+
 DROP PROCEDURE IF EXISTS `sp_eliminar_libro`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_eliminar_libro` (IN `p_libroID` INT)   BEGIN
     UPDATE libro SET estado = 0 WHERE libroID = p_libroID;
@@ -143,6 +188,18 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_insertarBibliotecario` (IN `p_na
   VALUES (p_name, p_lastName, p_email, p_user, p_password, 2);
 END$$
 
+DROP PROCEDURE IF EXISTS `sp_insertar_bibliotecario`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_insertar_bibliotecario` (IN `p_nombre` VARCHAR(30), IN `p_apellido` VARCHAR(30), IN `p_email` VARCHAR(30), IN `p_usuario` VARCHAR(15), IN `p_contrasenia` VARCHAR(15))   BEGIN
+    INSERT INTO bibliotecario (nombre, apellido, email, usuario, contrasenia, rolID)
+    VALUES (p_nombre, p_apellido, p_email, p_usuario, p_contrasenia, 2);
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_insertar_lector`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_insertar_lector` (IN `p_nombre` VARCHAR(50), IN `p_apellido` VARCHAR(50), IN `p_cedula` VARCHAR(20), IN `p_email` VARCHAR(100), IN `p_telefono` VARCHAR(20), IN `p_direccion` TEXT)   BEGIN
+    INSERT INTO lector (nombre, apellido, cedula, email, telefono, direccion, estadoLectorID)
+    VALUES (p_nombre, p_apellido, p_cedula, p_email, p_telefono, p_direccion, 1); -- 1 = Activo
+END$$
+
 DROP PROCEDURE IF EXISTS `sp_insertar_libro`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_insertar_libro` (IN `p_title` VARCHAR(255), IN `p_author` VARCHAR(255), IN `p_year` INT, IN `p_pages_no` INT, IN `p_genderID` VARCHAR(100))   BEGIN
   INSERT INTO libro (title, author, year, pages_no, genderID)
@@ -154,11 +211,55 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listar_generos` ()   BEGIN
     SELECT genderID, name FROM genero;
 END$$
 
+DROP PROCEDURE IF EXISTS `sp_modificar_bibliotecario`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_modificar_bibliotecario` (IN `p_bibliotecarioID` INT, IN `p_nombre` VARCHAR(30), IN `p_apellido` VARCHAR(30), IN `p_email` VARCHAR(30), IN `p_usuario` VARCHAR(15), IN `p_contrasenia` VARCHAR(15))   BEGIN
+    UPDATE bibliotecario
+    SET nombre = p_nombre,
+        apellido = p_apellido,
+        email = p_email,
+        usuario = p_usuario,
+        contrasenia = IF(p_contrasenia = '', contrasenia, p_contrasenia)
+    WHERE bibliotecarioID = p_bibliotecarioID;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_modificar_lector`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_modificar_lector` (IN `p_lectorID` INT, IN `p_nombre` VARCHAR(50), IN `p_apellido` VARCHAR(50), IN `p_cedula` VARCHAR(20), IN `p_email` VARCHAR(100), IN `p_telefono` VARCHAR(20), IN `p_direccion` TEXT)   BEGIN
+    UPDATE lector
+    SET nombre = p_nombre,
+        apellido = p_apellido,
+        cedula = p_cedula,
+        email = p_email,
+        telefono = p_telefono,
+        direccion = p_direccion
+    WHERE lectorID = p_lectorID;
+END$$
+
 DROP PROCEDURE IF EXISTS `sp_modificar_libro`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_modificar_libro` (IN `p_libroID` INT, IN `p_title` VARCHAR(50), IN `p_author` VARCHAR(60), IN `p_year` INT, IN `p_pages` INT, IN `p_genderID` INT)   BEGIN
     UPDATE libro 
     SET title = p_title, author = p_author, year = p_year, pages_no = p_pages, genderID = p_genderID
     WHERE libroID = p_libroID;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_obtener_bibliotecarios`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_obtener_bibliotecarios` ()   BEGIN
+    SELECT bibliotecarioID, nombre, apellido, email, usuario, rolID 
+    FROM bibliotecario
+    WHERE rolID = 2;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_obtener_lectores`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_obtener_lectores` ()   BEGIN
+    SELECT lectorID, nombre, apellido, cedula, email, telefono, direccion, estadoLectorID
+    FROM lector
+    WHERE estadoLectorID = 1;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_obtener_lectores_inactivos`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_obtener_lectores_inactivos` ()   BEGIN
+    SELECT lectorID, nombre, apellido, cedula, email, telefono, direccion, estadoLectorID
+    FROM lector
+    WHERE estadoLectorID = 2; -- 2 = Inactivo
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_obtener_libros`$$
@@ -199,6 +300,26 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_obtener_libros_habilitados` ()  
     SELECT * FROM libro WHERE estado = 1;  -- Asumiendo que '1' es el estado habilitado
 END$$
 
+DROP PROCEDURE IF EXISTS `sp_obtener_prestamos`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_obtener_prestamos` ()   BEGIN
+    SELECT 
+        prestamoID, 
+        fecha_prestamo, 
+        fecha_devolucion, 
+        estadoprestamoID, 
+        lectorID, 
+        fecha_finalizacion
+    FROM 
+        prestamo;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_reactivar_lector`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_reactivar_lector` (IN `p_lectorID` INT)   BEGIN
+    UPDATE lector
+    SET estadoLectorID = 1 -- 1 = Activo
+    WHERE lectorID = p_lectorID;
+END$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -231,20 +352,24 @@ CREATE TABLE `bibliotecario` (
   `email` varchar(30) NOT NULL,
   `usuario` varchar(15) NOT NULL,
   `contrasenia` varchar(15) NOT NULL,
-  `rolID` int(11) NOT NULL
+  `rolID` int(11) NOT NULL,
+  `bloqueado` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `bibliotecario`
 --
 
-INSERT INTO `bibliotecario` (`bibliotecarioID`, `nombre`, `apellido`, `email`, `usuario`, `contrasenia`, `rolID`) VALUES
-(2, 'juan ernesto', 'riquelme mera', 'juanerne@mail.com', 'juanere', '123456', 2),
-(3, 'Jeremy David', 'Soto Monar', 'jeremymon@mail.com', 'jedoso', '422463', 2),
-(4, 'Maria Elisa', 'Estrella Dueñas', 'melisa@mail.com', 'melissa1', '$2y$10$kwxK.4s0', 2),
-(5, 'Didier Joel', 'Frias Mayor', 'didi123@mmail.com', 'jolo45', '$2y$10$LQ7dGN5e', 2),
-(6, 'Diego Alejandro', 'Farias Mite', 'Fmite@mail.com', 'diego12', '$2y$10$f9cyUEMR', 2),
-(7, '', '', '', '', '$2y$10$tP9MOaYg', 2);
+INSERT INTO `bibliotecario` (`bibliotecarioID`, `nombre`, `apellido`, `email`, `usuario`, `contrasenia`, `rolID`, `bloqueado`) VALUES
+(2, 'juan ernesto', 'riquelme mera', 'juanerne@mail.com', 'juanere', '123456', 2, 0),
+(3, 'Jeremy David', 'Soto Monar', 'jeremymon@mail.com', 'jedoso', '422463', 2, 0),
+(4, 'Maria Elisa', 'Estrella Dueñas', 'melisa@mail.com', 'melissa1', '$2y$10$kwxK.4s0', 2, 0),
+(5, 'Didier Joel', 'Frias Mayor', 'didi123@mmail.com', 'jolo45', '$2y$10$LQ7dGN5e', 2, 0),
+(6, 'Diego Alejandro', 'Farias Mite', 'Fmite@mail.com', 'diego12', '$2y$10$f9cyUEMR', 2, 0),
+(7, 'Marlon', 'Quijije', 'quijijema@mail.com', 'quijijex', '456', 2, 0),
+(8, 'Josefina', 'Garcia', 'josega@mail.com', 'gajose1', '1234', 2, 0),
+(9, 'lucas', 'bajaña', 'luca@mail.com', 'lucas1', '45556', 2, 0),
+(10, 'Kevin ', 'Arguello', 'kevin@mail.com', 'kevin12', '1236', 2, 0);
 
 -- --------------------------------------------------------
 
@@ -417,9 +542,14 @@ CREATE TABLE `existencialibro` (
 
 INSERT INTO `existencialibro` (`existenciaID`, `libroID`, `ubicacionID`, `estadoExistenciaID`, `disponibilidadExistenciaID`) VALUES
 (1, 8, 2, 3, 1),
-(2, 8, 2, 3, 2),
-(3, 1, 5, 1, 1),
-(4, 6, 4, 2, 1);
+(2, 8, 8, 1, 2),
+(3, 1, 6, 2, 2),
+(4, 6, 4, 2, 1),
+(5, 8, 1, 3, 1),
+(6, 4, 7, 3, 1),
+(7, 6, 4, 2, 2),
+(8, 5, 5, 3, 2),
+(9, 12, 3, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -463,6 +593,13 @@ CREATE TABLE `lector` (
   `estadoLectorID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `lector`
+--
+
+INSERT INTO `lector` (`lectorID`, `nombre`, `apellido`, `cedula`, `email`, `telefono`, `direccion`, `estadoLectorID`) VALUES
+(1, 'Juana Maria', 'Arcos Vera', '0985745124', 'juanaa@mail.com', '785457', 'Calle 15', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -485,16 +622,22 @@ CREATE TABLE `libro` (
 --
 
 INSERT INTO `libro` (`libroID`, `title`, `author`, `year`, `pages_no`, `genderID`, `estado`) VALUES
-(1, 'a', 'a', 123, 1234, 2, 1),
-(2, 'e', 'e', 1234, 123, 1, 1),
-(3, 'EL teorema de Katherins', 'Jonn green', 2003, 450, 2, 0),
-(4, 'El quijote', 'Miguel Cervantes', 1990, 450, 2, 0),
-(5, 'El quijote', 'Miguel Cervantes', 1990, 450, 2, 1),
-(6, 'El quijote', 'Miguel Cervantes', 1990, 450, 2, 1),
-(7, 'EL quijote', 'Juan carlos', 123, 123, 4, 0),
+(1, 'Así como tú', 'Angela Pesantes', 2015, 550, 4, 1),
+(2, 'El arbol con la Ventana', 'Kevin Torres Arguello', 2003, 300, 2, 1),
+(3, 'EL teorema de Katherins', 'Jonn green', 2003, 450, 2, 1),
+(4, 'El quijote', 'Miguel Cervantes', 1990, 450, 2, 1),
+(5, 'Las aventuras de los Enanos', 'Micaela Romero', 2000, 366, 1, 1),
+(6, 'Lo que el Agua se llevó', 'Miriam Arteaga', 2005, 665, 3, 1),
+(7, 'Cazadores de Sombras', 'Alexandra Jimenez', 2005, 980, 1, 1),
 (8, '100 años de soledad', 'Gabriel Garcia Marquez', 1965, 450, 2, 1),
-(9, 'dasdasd', 'asdasd', 1234, 123123, 1, 1),
-(10, 'Yo antes de tí', 'Maria guadalupe', 2003, 550, 2, 1);
+(9, 'Despues de la Tormenta', 'Miguel Angel Cuadra', 1998, 420, 4, 1),
+(10, 'Yo antes de tí', 'Maria guadalupe', 2003, 550, 2, 1),
+(11, 'Ventanas del mas alla', 'Pedro Montes', 1998, 455, 4, 1),
+(12, 'Las 1000 y una noches', 'ahmend khed', 1998, 778, 5, 1),
+(13, 'Mi vida atra vez de ti', 'Juan Diego', 2014, 350, 2, 1),
+(14, 'Ella es Laura', 'José de la Mancha', 2004, 350, 4, 1),
+(15, 'Aquí en mi Mundo', 'Allan Martinez', 2003, 275, 1, 1),
+(16, 'Un dia Bajo la Lluvia', 'Kelvin Armando', 1998, 350, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -508,6 +651,14 @@ CREATE TABLE `listarreservas` (
   `prestamoID` int(11) NOT NULL,
   `existenciaID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `listarreservas`
+--
+
+INSERT INTO `listarreservas` (`listarreservaID`, `prestamoID`, `existenciaID`) VALUES
+(0, 1, 2),
+(1, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -541,6 +692,13 @@ CREATE TABLE `prestamo` (
   `lectorID` int(11) NOT NULL,
   `fecha_finalizacion` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `prestamo`
+--
+
+INSERT INTO `prestamo` (`prestamoID`, `fecha_prestamo`, `fecha_devolucion`, `estadoprestamoID`, `lectorID`, `fecha_finalizacion`) VALUES
+(1, '2025-05-03', '2025-05-07', 1, 1, '2025-05-06');
 
 -- --------------------------------------------------------
 
@@ -739,7 +897,7 @@ ALTER TABLE `alquilercubiculo`
 -- AUTO_INCREMENT de la tabla `bibliotecario`
 --
 ALTER TABLE `bibliotecario`
-  MODIFY `bibliotecarioID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `bibliotecarioID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `comprobante`
@@ -793,7 +951,7 @@ ALTER TABLE `estadoprestamo`
 -- AUTO_INCREMENT de la tabla `existencialibro`
 --
 ALTER TABLE `existencialibro`
-  MODIFY `existenciaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `existenciaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `genero`
@@ -805,13 +963,13 @@ ALTER TABLE `genero`
 -- AUTO_INCREMENT de la tabla `lector`
 --
 ALTER TABLE `lector`
-  MODIFY `lectorID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `lectorID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `libro`
 --
 ALTER TABLE `libro`
-  MODIFY `libroID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `libroID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `multa`
@@ -823,7 +981,7 @@ ALTER TABLE `multa`
 -- AUTO_INCREMENT de la tabla `prestamo`
 --
 ALTER TABLE `prestamo`
-  MODIFY `prestamoID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `prestamoID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`
