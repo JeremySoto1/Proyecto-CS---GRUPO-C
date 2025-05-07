@@ -26,13 +26,30 @@ if (!isset($librosHabilitados)) $librosHabilitados = [];
             <h1>Gestión de Libros</h1>
             <div class="user-info">
                 <span><?= htmlspecialchars($_SESSION['nombre'] . ' ' . $_SESSION['apellido']) ?></span>
-                <a href="../../Login/logout.php" class="logout-btn">
+                <a href="../../../index.php" class="logout-btn">
                     <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
                 </a>
             </div>
         </div>
+        
 
         <div class="content">
+            <?php 
+                 if (isset($_GET['error'])) {
+                     $errorClass = '';
+                     switch($_GET['code'] ?? 0) {
+                         case 600: $errorClass = 'error-duplicado'; break;
+                         case 603: $errorClass = 'error-validacion'; break;
+                         case 602: $errorClass = 'error-prestado'; break;
+                         default: $errorClass = 'error-generico';
+                     }
+
+                     echo '<div class="error-message '.$errorClass.'">';
+                     echo '<i class="fas fa-exclamation-circle"></i> ';
+                     echo htmlspecialchars($_GET['error']);
+                     echo '</div>';
+                 }
+             ?>
             <!-- Formulario de búsqueda -->
             <form method="POST" class="form-busqueda">
                 <select name="campo_busqueda" required>

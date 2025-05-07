@@ -21,7 +21,7 @@ if (!isset($bibliotecarios)) $bibliotecarios = [];
             <h1>Gestión de Bibliotecarios</h1>
             <div class="user-info">
                 <span><?= htmlspecialchars($_SESSION['nombre'] . ' ' . $_SESSION['apellido']) ?></span>
-                <a href="../../Login/logout.php" class="logout-btn">
+                <a href="../../../index.php" class="logout-btn">
                     <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
                 </a>
             </div>
