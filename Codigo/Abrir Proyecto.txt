@@ -1,8 +1,0 @@
-Para abrir el proyecto, se debe:
-1.- Descomprmir el zip. Proyecto CS - Grupo 3
-2.- La carpeta descomprimida ponerlo en el disco c/xampp/htdoc y pegar la carpeta
-3.- Se deberá importar la BD con el archivo llamado: gestionbiblioteca.sql
-4.- Se debe abrir phpmyadmin ir a bd, crear una bd llamada gestionbiblioteca y luego ir a la opcion importar
-5.- Subir el archivo gestionbiblioteca.sql e ir al boton de continuar o importar y dar clic.
-6.- Se generara la BD con todos los procedimientos almacenados hasta el momento
-7.- Para la ejecución del proyecto deberá ejecutar el index.php
