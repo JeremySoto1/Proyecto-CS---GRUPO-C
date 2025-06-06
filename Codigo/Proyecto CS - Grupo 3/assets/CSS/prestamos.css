@@ -9,7 +9,8 @@ body {
 }
 
 h1,
-h2 {
+h2,
+h5 {
   color: #2c3e50;
   margin-bottom: 15px;
 }
@@ -18,6 +19,12 @@ h1 {
   font-size: 28px;
   border-bottom: 2px solid #3498db;
   padding-bottom: 10px;
+}
+
+h5 {
+  font-size: 16px;
+  color: #7f8c8d;
+  margin-top: -10px;
 }
 
 /* Sección de filtros */
@@ -68,6 +75,12 @@ tr:hover {
 }
 
 /* Botones */
+.button-container {
+  margin: 25px 0;
+  display: flex;
+  gap: 10px;
+}
+
 button,
 input[type="submit"] {
   background-color: #3498db;
@@ -105,7 +118,7 @@ select:focus {
   box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
 }
 
-/* MODAL */
+/* MODAL - Estilos mejorados */
 .modal {
   display: none;
   position: fixed;
@@ -133,7 +146,7 @@ select:focus {
   margin: 50px auto;
   padding: 30px;
   width: 85%;
-  max-width: 800px;
+  max-width: 1200px;
   border-radius: 8px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
   position: relative;
@@ -189,15 +202,30 @@ select:focus {
   margin: 20px 0;
 }
 
+.date-selection p {
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* Tabla dentro del modal */
+.modal-content table {
+  box-shadow: none;
+  margin: 15px 0;
+}
+
+.modal-content th {
+  background-color: #2c3e50;
+}
+
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .filter-section form {
     flex-direction: column;
     align-items: stretch;
   }
 
   .modal-content {
-    width: 95%;
+    width: 100%;
     padding: 20px 15px;
   }
 
@@ -233,4 +261,43 @@ select:focus {
     content: attr(data-label);
     font-weight: bold;
   }
+}
+
+/* Estilos para el modal de devolución */
+#devolucionModal .modal-content {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+#motivoContainer {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
 }
