@@ -1,3 +1,19 @@
+<?php
+session_start();
+require_once '../Modelo/prestamos_modelo.php';
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Obtener préstamos (normales o resultados de búsqueda)
+$prestamos = $_SESSION['resultados_busqueda'] ?? obtenerPrestamos();
+
+// Limpiar resultados de búsqueda después de mostrarlos
+unset($_SESSION['resultados_busqueda']);
+
+// Obtener libros solo si es necesario
+$libros = obtenerLibros();
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,13 +27,17 @@
 
 <!-- Buscador -->
 <form method="POST" action="../Controlador/prestamos_controlador.php">
-    <select name="campo_busqueda" required>
-        <option value="lectorCedula">Buscar por Cédula</option>
-        <option value="estado_prestamo">Buscar por Estado</option>
+    <label for="tipo_busqueda">Buscar por:</label>
+    <select id="tipo_busqueda" name="tipo_busqueda" required>
+        <option value="cedula">Cédula</option>
+        <option value="nombre_apellido">Nombre y Apellido</option>
     </select>
-    <input type="text" name="valor_busqueda" placeholder="Buscar..." required>
-    <button type="submit" name="buscar">Buscar</button>
-    <button type="button" onclick="window.location.href='prestamos.php'">Mostrar Todos</button>
+    
+    <label for="termino_busqueda">Término de búsqueda:</label>
+    <input type="text" id="termino_busqueda" name="termino_busqueda" placeholder="Buscar..." required>
+    
+    <button type="submit" name="accion" value="buscar">Buscar</button>
+    <button type="button" onclick="window.location.href='prestamos_vista.php'">Mostrar Todos</button>
 </form>
 
 <!-- Tabla de Préstamos -->
@@ -25,33 +45,43 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Nombre Lector</th>
-                <th>Cédula Lector</th>
-                <th>Libros</th>
-                <th>Fecha Préstamo</th>
-                <th>Fecha Límite</th>
-                <th>Estado</th>
+                <th>Prestamo ID</th>
+                <th>Fecha Emision</th>
+                <th>Fecha Finalización</th>
+                <th>Fecha Devolucion</th>
+                <th>Estado Prestamo</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Cedula</th>
+                <th>ExistenciaID</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($prestamos as $prestamo): ?>
+                <?php 
+    // Depuración: Ver los datos de cada préstamo
+    error_log("Prestamo ID: ".$prestamo['prestamoID'].", Existencia ID: ".($prestamo['existenciaID'] ?? 'NO DEFINIDO'));
+    ?>
                 <tr id="fila-<?=$prestamo['prestamoID']?>">
                     <td class="IDPrestamo"><?= $prestamo['prestamoID'] ?></td>
-                    <td class="NombreLector"><?= $prestamo['lectorNombre'] ?></td>
-                    <td class="CedulaLector"><?= $prestamo['lectorCedula'] ?></td>
-                    <td class="LibrosPrestados"><?= $prestamo['libros'] ?></td>
                     <td class="FechaPrestamo"><?= $prestamo['fecha_prestamo'] ?></td>
-                    <td class="FechaLimite"><?= $prestamo['fecha_devolucion'] ?></td>
-                    <td class="EstadoPrestamo"><?= $prestamo['estadoprestamoID'] ?></td>
+                    <td class="FechaLimite"><?= $prestamo['fecha_finalizacion'] ?></td>
+                    <td class="FechaDevolucion"><?= $prestamo['fecha_devolucion'] ?></td>
+                    <td class="EstadoPrestamo"><?= $prestamo['estado'] ?? $prestamo['estadoprestamoID'] ?></td>
+                    <td class="NombreLector"><?= $prestamo['nombre'] ?></td>
+                    <td class="ApellidoLector"><?= $prestamo['apellido'] ?></td>
+                    <td class="CedulaLector"><?= $prestamo['cedula'] ?></td>
+                    <td class="Existencia"><?= $prestamo['existenciaID'] ?></td>
                     <td>
-                        <?php if ($prestamo['estadoprestamoID'] == 'activo'): ?>
-                            <form method="POST" action="../Controlador/prestamos_controlador.php" style="display:inline;">
-                                <input type="hidden" name="devolverID" value="<?= $prestamo['prestamoID'] ?>">
-                                <button type="submit" class="btn-devolver">Devolver</button>
-                            </form>
-                        <?php endif; ?>
+                        <?php if ($prestamo['estado'] == 'Activo' && !empty($prestamo['existenciaID'])): ?>
+                        <button type="button" 
+                        class="btn-devolver" 
+                        data-prestamo="<?= $prestamo['prestamoID'] ?>" 
+                        data-existencia="<?= $prestamo['existenciaID'] ?>">
+                            Devolver
+                        </button>
+                      <?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -63,43 +93,11 @@
 <button id="mostrarFormulario">Agregar Préstamo</button>
 
 <!-- Modal Formulario Préstamo -->
-<div id="prestamoModal" class="modal" style="display:none;">
-    <div class="modal-content">
-        <span class="close" onclick="cerrarModal()">&times;</span>
-        <form id="form_prestamo" action="../Controlador/prestamos_controlador.php" method="POST">
-        <input type="hidden" id="prestamoID" name="prestamoID">    
-        <input type="hidden" name="guardar" value="1">
-            
-            <h2>Información del Lector</h2>
-            <label>Cédula:</label>
-            <input type="text" id="cedula" required>
-            <button type="button" onclick="buscarLector()">Buscar Lector</button>
+<?php include 'modal_prestamo.php'; ?>
 
-            <input type="hidden" name="lectorID" id="lectorID">
-            <p>Nombre: <span id="lectorNombre">-</span></p>
-            <p>Email: <span id="lectorEmail">-</span></p>
+<!-- Al final del body, después del modal de préstamo -->
+<?php include 'modal_devolucion.php'; ?>
 
-            <h2>Libros</h2>
-            <label>Buscar Libro:</label>
-            <input type="text" id="busquedaLibro" placeholder="Titulo o Autor">
-            <button type="button" onclick="buscarLibros()">Buscar</button>
-
-            <div id="resultadosLibros" style="margin: 10px; max-height: 200px; overflow-y: auto;">
-                <!-- Los resultados de la búsqueda aparecerán aquí -->
-            </div>
-
-            <h2>Fechas</h2>
-            <label>Fecha Préstamo:</label>
-            <input type="date" name="fecha_prestamo" required>
-
-            <label>Fecha Límite:</label>
-            <input type="date" name="fecha_limite" required>
-
-            <button type="submit">Guardar Préstamo</button>
-            <button type="button" onclick="cerrarModal()">Cancelar</button>
-        </form>
-    </div>
-</div>
 
 <script src="../../../assets/js/prestamos.js"></script>
 
