@@ -1,0 +1,207 @@
+/* Estilos generales */
+.main-content {
+  margin-left: 250px;
+  padding: 20px;
+  background-color: #f9f5f0;
+}
+
+.content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Formulario de búsqueda */
+.form-busqueda {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.form-busqueda select,
+.form-busqueda input {
+  padding: 8px 12px;
+  border: 1px solid #d6cfc4;
+  border-radius: 4px;
+  background-color: #faf8f6;
+}
+
+/* Botón de búsqueda */
+.form-busqueda button {
+  padding: 8px 15px;
+  background-color: #ad8d63;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.form-busqueda button:hover {
+  background-color: #987552;
+}
+
+/* Tabla */
+.Mostrar_Datos {
+  overflow-x: auto;
+}
+
+.Mostrar_Datos table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background-color: white;
+  border: 1px solid #e0d8cd;
+}
+
+.Mostrar_Datos th,
+.Mostrar_Datos td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #e0d8cd;
+}
+
+.Mostrar_Datos th {
+  background-color: #ad8d63;
+  color: white;
+}
+
+.Mostrar_Datos tr:hover {
+  background-color: #f5efe8;
+}
+
+/* Botones generales */
+button {
+  padding: 4px 8px;
+  border: none;
+  border-radius: 1px;
+  cursor: pointer;
+  margin: 2px;
+}
+
+button[type="submit"] {
+  background-color: #ad8d63;
+  color: white;
+}
+
+button[type="submit"]:hover {
+  background-color: #987552;
+}
+
+button[type="button"] {
+  background-color: #b3472d;
+  color: white;
+}
+
+button[type="button"]:hover {
+  background-color: #933623;
+}
+
+/* Formulario flotante */
+#formularioBibliotecario {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  width: 400px;
+  max-width: 90%;
+}
+
+#formularioBibliotecario div {
+  margin-bottom: 15px;
+}
+
+#formularioBibliotecario label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #654f3b;
+}
+
+#formularioBibliotecario input,
+#formularioBibliotecario select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #d6cfc4;
+  border-radius: 4px;
+  background-color: #faf8f6;
+}
+
+/* Botones dentro del formulario */
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Botón agregar flotante */
+#mostrarFormulario {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #ad8d63;
+  color: white;
+  border: none;
+  width: 170px;
+  height: 60px;
+  border-radius: 12%;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+#mostrarFormulario:hover {
+  background-color: #987552;
+}
+
+.alerta {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1100;
+  max-width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.5s, fadeOut 0.5s 2.5s forwards;
+}
+
+.alerta-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

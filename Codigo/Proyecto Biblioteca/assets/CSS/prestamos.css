@@ -1,0 +1,317 @@
+/* Estilos generales */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f8f9fa;
+  color: #333;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h5 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+h1 {
+  font-size: 28px;
+  border-bottom: 2px solid #ad8d63;
+  padding-bottom: 10px;
+}
+
+h5 {
+  font-size: 16px;
+  color: #ad8d63;
+  margin-top: -10px;
+}
+.content {
+  padding: 15px;
+}
+
+/* Sección de filtros */
+.filter-section {
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.filter-section form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.filter-section label {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Tablas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+th,
+td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #ad8d63;
+  color: white;
+  font-weight: 600;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* Botones */
+.button-container {
+  margin: 25px 0;
+  display: flex;
+  gap: 10px;
+}
+
+button,
+input[type="submit"] {
+  background-color: #ad8d63;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+button:hover,
+input[type="submit"]:hover {
+  background-color: #ad8d63;
+}
+
+/* Inputs */
+input[type="text"],
+input[type="date"],
+select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: border 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+select:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* MODAL - Estilos mejorados */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  overflow-y: auto;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background-color: white;
+  margin: 50px auto;
+  padding: 30px;
+  width: 85%;
+  max-width: 1200px;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  position: relative;
+  animation: slideDown 0.3s;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.close {
+  position: absolute;
+  right: 25px;
+  top: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #7f8c8d;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.close:hover {
+  color: #333;
+}
+
+/* Secciones dentro del modal */
+.section {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  border: 1px solid #eee;
+}
+
+.reader-info p {
+  margin: 8px 0;
+  font-weight: 600;
+}
+
+.reader-info span {
+  font-weight: normal;
+  color: #555;
+}
+
+.date-selection {
+  margin: 20px 0;
+}
+
+.date-selection p {
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* Tabla dentro del modal */
+.modal-content table {
+  box-shadow: none;
+  margin: 15px 0;
+}
+
+.modal-content th {
+  background-color: #2c3e50;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .filter-section form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .modal-content {
+    width: 100%;
+    padding: 20px 15px;
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  tr {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+  }
+
+  td {
+    border: none;
+    position: relative;
+    padding-left: 50%;
+  }
+
+  td:before {
+    position: absolute;
+    left: 10px;
+    content: attr(data-label);
+    font-weight: bold;
+  }
+}
+
+/* Estilos para el modal de devolución */
+#devolucionModal .modal-content {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+#motivoContainer {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.mensaje-usuario {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #fdecea;
+  color: #d8000c;
+  border: 1px solid #d8000c;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+}
